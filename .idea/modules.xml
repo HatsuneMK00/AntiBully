@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ShuangChuangAntiBully.iml" filepath="$PROJECT_DIR$/ShuangChuangAntiBully.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui_layer/ui_layer.iml" filepath="$PROJECT_DIR$/ui_layer/ui_layer.iml" />
+    </modules>
+  </component>
+</project>
