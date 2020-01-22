@@ -69,4 +69,19 @@ public class CourseController {
         return map;
     }
 
+    @PostMapping("/attachExercise")
+    Map<String, Object> bindExerciseAndCourse(
+            @RequestParam("chapter") int chapter,
+            @RequestParam("courseId") int courseId,
+            @RequestParam("exerciseId") int exerciseId
+    ) {
+        HashMap<String, Object> map = new HashMap<>();
+        int retVal = courseService.bindExerciseAndCourse(chapter, courseId, exerciseId);
+        map.put("status", retVal);
+        map.put("chapter", chapter);
+        map.put("courseId", courseId);
+        map.put("exerciseId", exerciseId);
+        return map;
+    }
+
 }
