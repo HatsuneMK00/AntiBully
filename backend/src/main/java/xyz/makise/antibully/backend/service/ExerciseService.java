@@ -2,40 +2,80 @@ package xyz.makise.antibully.backend.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.makise.antibully.backend.entity.Exercise;
 import xyz.makise.antibully.backend.mapper.ExerciseMapper;
+import xyz.makise.antibully.backend.mapper.ExerciseRepoMapper;
+
+import java.util.List;
 
 @Service
 public class ExerciseService {
     final
-    ExerciseMapper mapper;
+    ExerciseMapper exerciseMapper;
+    final
+    ExerciseRepoMapper exerciseRepoMapper;
 
-    public ExerciseService(ExerciseMapper mapper) {
-        this.mapper = mapper;
+    public ExerciseService(ExerciseMapper exerciseMapper, ExerciseRepoMapper exerciseRepoMapper) {
+        this.exerciseMapper = exerciseMapper;
+        this.exerciseRepoMapper = exerciseRepoMapper;
     }
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+
+    /*
+     * 与课程相关
+     * */
+
     Exercise getExerciseOfCourse(int chapter, int courseId) {
         Exercise exercise = null;
         try {
-            int exerciseId = mapper.getExerciseIdOfCourse(chapter, courseId);
-            exercise = mapper.getExercise(exerciseId);
+            int exerciseId = exerciseMapper.getExerciseIdOfCourse(chapter, courseId);
+            exercise = exerciseMapper.getExercise(exerciseId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return exercise;
     }
 
-    int bindExerciseAndCourse(int exerciseId, int chapter, int courseId) {
-        int retVal = -1;
+    /*
+     * 与题库相关
+     * */
+    List<Exercise> getExercisesOfRepo(int repoId) {
+        List<Exercise> exercises = null;
         try {
-            retVal = mapper.bindExerciseAndCourse(exerciseId, chapter, courseId);
+            exercises = exerciseMapper.getExercisesOfRepo(repoId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return retVal;
+        return exercises;
+    }
+
+    int addExercise(Exercise exercise) {
+        try {
+            return exerciseMapper.addExercise(exercise);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return 0;
+    }
+
+    int deleteExercise(int exerciseId) {
+        try {
+            return exerciseMapper.deleteExercise(exerciseId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return 0;
+    }
+
+    int updateExerciseAnswer(Exercise exercise) {
+        try {
+            return exerciseMapper.updateExerciseAnswer(exercise);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return 0;
     }
 }

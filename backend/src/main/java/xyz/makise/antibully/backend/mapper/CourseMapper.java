@@ -24,6 +24,9 @@ public interface CourseMapper {
     @Insert("insert into course(chapter,uri,courseId,duration) values(#{chapter},#{uri},#{courseId},#{duration})")
     int addCourse(Course course);
 
+    @Insert("insert into belong_course(chapter,courseId,exerciseId) values(#{chapter},#{courseId},#{exerciseId})")
+    int bindExerciseToCourse(int chapter, int courseId, int exerciseId);
+
     @Delete("delete from course where  chapter=#{chapter} and courseId=#{courseId}")
     int deleteCourse(int chapter, int courseId);
 }
