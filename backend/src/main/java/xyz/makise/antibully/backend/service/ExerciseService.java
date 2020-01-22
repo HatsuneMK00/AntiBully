@@ -28,7 +28,7 @@ public class ExerciseService {
      * 与课程相关
      * */
 
-    Exercise getExerciseOfCourse(int chapter, int courseId) {
+    public Exercise getExerciseOfCourse(int chapter, int courseId) {
         Exercise exercise = null;
         try {
             int exerciseId = exerciseMapper.getExerciseIdOfCourse(chapter, courseId);
@@ -42,7 +42,7 @@ public class ExerciseService {
     /*
      * 与题库相关
      * */
-    List<Exercise> getExercisesOfRepo(int repoId) {
+    public List<Exercise> getExercisesOfRepo(int repoId) {
         List<Exercise> exercises = null;
         try {
             exercises = exerciseMapper.getExercisesOfRepo(repoId);
@@ -52,7 +52,16 @@ public class ExerciseService {
         return exercises;
     }
 
-    int addExercise(Exercise exercise) {
+    public Exercise getExercise(int exerciseId) {
+        try {
+            return exerciseMapper.getExercise(exerciseId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public int addExercise(Exercise exercise) {
         try {
             return exerciseMapper.addExercise(exercise);
         } catch (Exception e) {
@@ -61,7 +70,7 @@ public class ExerciseService {
         return 0;
     }
 
-    int deleteExercise(int exerciseId) {
+    public int deleteExercise(int exerciseId) {
         try {
             return exerciseMapper.deleteExercise(exerciseId);
         } catch (Exception e) {
@@ -70,7 +79,7 @@ public class ExerciseService {
         return 0;
     }
 
-    int updateExerciseAnswer(Exercise exercise) {
+    public int updateExerciseAnswer(Exercise exercise) {
         try {
             return exerciseMapper.updateExerciseAnswer(exercise);
         } catch (Exception e) {

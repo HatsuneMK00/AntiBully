@@ -45,7 +45,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/{chapter}/{courseId}")
-    Map<String, Object> deleteCourseUri(@PathVariable("chapter") int chapter, @PathVariable("courseId") int courseId) {
+    Map<String, Object> deleteCourse(@PathVariable("chapter") int chapter, @PathVariable("courseId") int courseId) {
         HashMap<String, Object> map = new HashMap<>();
         int retVal = -1;
         Course courseCopy = courseService.getCourse(chapter, courseId);
