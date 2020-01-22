@@ -1,6 +1,5 @@
 package xyz.makise.antibully.backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.makise.antibully.backend.entity.Course;
 import xyz.makise.antibully.backend.service.CourseService;
@@ -47,9 +46,8 @@ public class CourseController {
     @DeleteMapping("/{chapter}/{courseId}")
     Map<String, Object> deleteCourse(@PathVariable("chapter") int chapter, @PathVariable("courseId") int courseId) {
         HashMap<String, Object> map = new HashMap<>();
-        int retVal = -1;
         Course courseCopy = courseService.getCourse(chapter, courseId);
-        retVal = courseService.deleteCourse(chapter, courseId);
+        int retVal = courseService.deleteCourse(chapter, courseId);
         map.put("status", retVal);
         map.put("course", courseCopy);
         return map;
@@ -71,9 +69,9 @@ public class CourseController {
 
     @PostMapping("/attachExercise")
     Map<String, Object> bindExerciseAndCourse(
-            @RequestParam("chapter") int chapter,
-            @RequestParam("courseId") int courseId,
-            @RequestParam("exerciseId") int exerciseId
+        @RequestParam("chapter") int chapter,
+        @RequestParam("courseId") int courseId,
+        @RequestParam("exerciseId") int exerciseId
     ) {
         HashMap<String, Object> map = new HashMap<>();
         int retVal = courseService.bindExerciseAndCourse(chapter, courseId, exerciseId);

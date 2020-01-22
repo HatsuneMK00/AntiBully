@@ -1,9 +1,6 @@
 package xyz.makise.antibully.backend.controller;
 
-import org.apache.ibatis.annotations.Update;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import xyz.makise.antibully.backend.entity.Course;
 import xyz.makise.antibully.backend.entity.Exercise;
 import xyz.makise.antibully.backend.service.ExerciseService;
 

@@ -24,7 +24,7 @@ public class ExerciseRepoService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    List<ExerciseRepo> getAllExerciseRepos() {
+    public List<ExerciseRepo> getAllExerciseRepos() {
         List<ExerciseRepo> exerciseRepos = null;
         try {
             exerciseRepos = exerciseRepoMapper.getAllExerciseRepos();
@@ -50,7 +50,7 @@ public class ExerciseRepoService {
 //        return map;
 //    }
 
-    int bindExerciseToRepo(int repoId, int exerciseId) {
+    public int bindExerciseToRepo(int repoId, int exerciseId) {
         int retVal = 0;
         try {
             retVal = exerciseRepoMapper.bindExerciseToRepo(repoId, exerciseId);
@@ -60,7 +60,16 @@ public class ExerciseRepoService {
         return retVal;
     }
 
-    int addExerciseRepo(ExerciseRepo exerciseRepo) {
+    public ExerciseRepo getExerciseRepo(int repoId) {
+        try {
+            return exerciseRepoMapper.getExerciseRepo(repoId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public int addExerciseRepo(ExerciseRepo exerciseRepo) {
         try {
             return exerciseRepoMapper.addExerciseRepo(exerciseRepo);
         } catch (Exception e) {
@@ -69,7 +78,7 @@ public class ExerciseRepoService {
         return 0;
     }
 
-    int deleteExerciseRepo(int repoId) {
+    public int deleteExerciseRepo(int repoId) {
         try {
             return exerciseRepoMapper.deleteExerciseRepo(repoId);
         } catch (Exception e) {
@@ -78,7 +87,7 @@ public class ExerciseRepoService {
         return 0;
     }
 
-    int updateTitleOfExerciseRepo(ExerciseRepo exerciseRepo) {
+    public int updateExerciseRepoTitle(ExerciseRepo exerciseRepo) {
         try {
             return exerciseRepoMapper.updateTitleOfExerciseRepo(exerciseRepo);
         } catch (Exception e) {
