@@ -19,7 +19,7 @@ public class CourseService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    Course getCourse(int chapter, int courseId) {
+    public Course getCourse(int chapter, int courseId) {
         Course course = null;
         try {
             course = courseMapper.getCourse(chapter, courseId);
@@ -29,7 +29,7 @@ public class CourseService {
         return course;
     }
 
-    List<Course> getCourseOfChapter(int chapter) {
+    public List<Course> getCourseOfChapter(int chapter) {
         List<Course> courses = null;
         try {
             courses = courseMapper.getCoursesOfChapter(chapter);
@@ -39,7 +39,7 @@ public class CourseService {
         return courses;
     }
 
-    int bindExerciseAndCourse(int chapter, int courseId, int exerciseId) {
+    public int bindExerciseAndCourse(int chapter, int courseId, int exerciseId) {
         int retVal = -1;
         try {
             retVal = courseMapper.bindExerciseToCourse(chapter, courseId, exerciseId);
@@ -49,7 +49,7 @@ public class CourseService {
         return retVal;
     }
 
-    int addCourse(Course course) {
+    public int addCourse(Course course) {
         try {
             return courseMapper.addCourse(course);
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class CourseService {
         return 0;
     }
 
-    int deleteCourse(int chapter, int courseId) {
+    public int deleteCourse(int chapter, int courseId) {
         try {
             return courseMapper.deleteCourse(chapter, courseId);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class CourseService {
         return 0;
     }
 
-    int updateCourseUri(Course course) {
+    public int updateCourseUri(Course course) {
         try {
             return courseMapper.updateCourseUri(course);
         } catch (Exception e) {
