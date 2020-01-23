@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fijkplayer/fijkplayer.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,7 +44,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FijkPlayer player = FijkPlayer();
   int _counter = 0;
 
   void _incrementCounter() {
@@ -57,21 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    player.setDataSource(
-        "https://sample-videos.com/video123/flv/240/big_buck_bunny_240p_10mb.flv",
-        autoPlay: true);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    player.release();
   }
 
   @override
@@ -93,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: FijkView(player: player),
+
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
