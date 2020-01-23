@@ -67,6 +67,7 @@ public class CourseController {
         return map;
     }
 
+//    TODO:考虑到权限问题 admin操作可能需要放到AdminController中去
     @PostMapping("/attachExercise")
     Map<String, Object> bindExerciseAndCourse(
         @RequestParam("chapter") int chapter,
