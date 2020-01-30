@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ShuangChuangAntiBully.iml" filepath="$PROJECT_DIR$/ShuangChuangAntiBully.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin_frontend/admin_frontend.iml" filepath="$PROJECT_DIR$/admin_frontend/admin_frontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/test_module/test_module.iml" filepath="$PROJECT_DIR$/test_module/test_module.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui_layer/ui_layer.iml" filepath="$PROJECT_DIR$/ui_layer/ui_layer.iml" />
