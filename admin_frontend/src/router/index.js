@@ -4,6 +4,7 @@ import CourseManagement from "@/components/CourseManagement";
 import ExerciseManagement from "@/components/ExerciseManagement";
 import RepoManagement from "@/components/RepoManagement";
 import HelpInfoManagement from "@/components/HelpInfoManagement";
+import QuestionnaireManagement from "@/components/QuestionnaireManagement";
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,11 @@ const routes = [
         name: 'helpInfoInit',
         redirect: '/helpInfo/unhandled',
     },
+    {
+        path: '/questionnaire',
+        name: 'questionnaire',
+        component: QuestionnaireManagement
+    }
 
 ];
 
