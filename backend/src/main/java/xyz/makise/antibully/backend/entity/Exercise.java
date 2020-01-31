@@ -12,6 +12,14 @@ public class Exercise {
     String type;
     String reason;
 
+    /*
+    * 如果是是非题 则只有choiceA起作用，其他的都是null
+    * */
+    String choiceA;
+    String choiceB;
+    String choiceC;
+    String choiceD;
+
     public int getExerciseId() {
         return exerciseId;
     }
@@ -50,5 +58,37 @@ public class Exercise {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getChoiceA() {
+        return choiceA;
+    }
+
+    public void setChoiceA(String choiceA) {
+        this.choiceA = choiceA;
+    }
+
+    public String getChoiceB() {
+        return choiceB;
+    }
+
+    public void setChoiceB(String choiceB) {
+        this.choiceB = choiceB;
+    }
+
+    public String getChoiceC() {
+        return choiceC;
+    }
+
+    public void setChoiceC(String choiceC) {
+        this.choiceC = choiceC;
+    }
+
+    public String getChoiceD() {
+        return choiceD;
+    }
+
+    public void setChoiceD(String choiceD) {
+        this.choiceD = choiceD;
     }
 }
