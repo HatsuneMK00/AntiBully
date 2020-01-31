@@ -5,6 +5,7 @@ import ExerciseManagement from "@/components/ExerciseManagement";
 import RepoManagement from "@/components/RepoManagement";
 import HelpInfoManagement from "@/components/HelpInfoManagement";
 import QuestionnaireManagement from "@/components/QuestionnaireManagement";
+import Statistic from "@/components/Statistic";
 
 Vue.use(VueRouter);
 
@@ -43,6 +44,11 @@ const routes = [
         path: '/questionnaire',
         name: 'questionnaire',
         component: QuestionnaireManagement
+    },
+    {
+        path: '/statistic',
+        name: 'statistic',
+        component: Statistic
     }
 
 ];
