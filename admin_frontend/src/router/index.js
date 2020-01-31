@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import CourseManagement from "@/components/CourseManagement";
 import ExerciseManagement from "@/components/ExerciseManagement";
 import RepoManagement from "@/components/RepoManagement";
+import HelpInfoManagement from "@/components/HelpInfoManagement";
 
 Vue.use(VueRouter);
 
@@ -26,7 +27,17 @@ const routes = [
         path: '/repo',
         name: 'repo',
         component: RepoManagement
-    }
+    },
+    {
+        path: '/helpInfo/:status',
+        name: 'helpInfo',
+        component: HelpInfoManagement,
+    },
+    {
+        path: '/helpInfo',
+        name: 'helpInfoInit',
+        redirect: '/helpInfo/unhandled',
+    },
 
 ];
 

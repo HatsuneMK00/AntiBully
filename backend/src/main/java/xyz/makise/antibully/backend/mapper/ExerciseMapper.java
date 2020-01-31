@@ -25,7 +25,7 @@ public interface ExerciseMapper {
     /*
     * 和题库相关
     * */
-    @Select("select exercise.exerciseId,content,answer,type,reason " +
+    @Select("select exercise.exerciseId,content,answer,type,reason,choiceA,choiceB,choiceC,choiceD" +
             "from exercise join belong_repo on exercise.exerciseId=belong_repo.exerciseId " +
             "where repoId=#{repoId}")
     List<Exercise> getExercisesOfRepo(int repoId);
