@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CourseManagement from "@/components/CourseManagement";
 import ExerciseManagement from "@/components/ExerciseManagement";
+import RepoManagement from "@/components/RepoManagement";
 
 Vue.use(VueRouter);
 
@@ -20,6 +21,11 @@ const routes = [
         path: '/exercise',
         name: 'exercise',
         component: ExerciseManagement
+    },
+    {
+        path: '/repo',
+        name: 'repo',
+        component: RepoManagement
     }
 
 ];
