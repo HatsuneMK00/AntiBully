@@ -8,7 +8,6 @@ public class Course {
     * */
     private int courseId;
     private String uri;
-    private double duration;
 
     public int getChapter() {
         return chapter;
@@ -32,13 +31,5 @@ public class Course {
 
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    public double getDuration() {
-        return duration;
-    }
-
-    public void setDuration(double duration) {
-        this.duration = duration;
     }
 }

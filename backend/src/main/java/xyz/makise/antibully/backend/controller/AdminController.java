@@ -33,6 +33,7 @@ public class AdminController {
         int retVal1;
         int retVal2;
         Course course = new Course();
+//        这边不用使用Integer.parseInt的理由可能是在表单里面这两项是不能改的
         course.setChapter((Integer) params.get("chapter"));
         course.setCourseId((Integer) params.get("courseId"));
         course.setUri((String) params.get("uri"));
@@ -43,6 +44,37 @@ public class AdminController {
                 (Integer) params.get("courseId")
         );
 //        两个返回值都为正才返回1 否则返回-1表示出现问题
+        if (retVal1 + retVal2 <= 0 || retVal1 * retVal2 <= 0) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
+    @DeleteMapping("/course/{chapter}/{courseId}")
+    int deleteCourseAdmin(@PathVariable("chapter") int chapter, @PathVariable("courseId") int courseId) {
+        return courseService.deleteCourse(chapter, courseId);
+    }
+
+    @PostMapping("/course")
+    int addCourseAdmin(@RequestBody Map<String,Object> params) {
+        int retVal1;
+        int retVal2;
+        if (!params.containsKey("chapter") || !params.containsKey("courseId")
+                || !params.containsKey("uri") || !params.containsKey("exerciseId")){
+            return -1;
+        }
+        Course course = new Course();
+        course.setChapter(Integer.parseInt((String) params.get("chapter")));
+        course.setCourseId(Integer.parseInt((String) params.get("courseId")));
+        course.setUri((String) params.get("uri"));
+        retVal1 = courseService.addCourse(course);
+
+        retVal2 = courseService.bindExerciseAndCourse(
+                Integer.parseInt((String) params.get("chapter")),
+                Integer.parseInt((String) params.get("courseId")),
+                Integer.parseInt((String) params.get("exerciseId"))
+        );
         if (retVal1 + retVal2 <= 0 || retVal1 * retVal2 <= 0) {
             return -1;
         } else {

@@ -12,8 +12,8 @@ import java.util.Map;
 
 @Repository
 public interface CourseMapper {
-    @Select("select course.chapter,course.courseId,uri,duration,exerciseId " +
-            "from course join belong_course " +
+    @Select("select course.chapter,course.courseId,uri,exerciseId " +
+            "from course left join belong_course " +
             "on course.chapter=belong_course.chapter and course.courseId=belong_course.courseId")
     List<Map<String,Object>> getAllCoursesWithExercise();
 
@@ -29,7 +29,7 @@ public interface CourseMapper {
     @Update("update course set uri=#{uri} where chapter=#{chapter} and courseId=#{courseId}")
     int updateCourseUri(Course course);
 
-    @Insert("insert into course(chapter,uri,courseId,duration) values(#{chapter},#{uri},#{courseId},#{duration})")
+    @Insert("insert into course(chapter,uri,courseId) values(#{chapter},#{uri},#{courseId})")
     int addCourse(Course course);
 
     @Insert("insert into belong_course(chapter,courseId,exerciseId) values(#{chapter},#{courseId},#{exerciseId})")

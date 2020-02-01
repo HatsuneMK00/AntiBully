@@ -57,7 +57,7 @@ public class CourseController {
     Map<String, Object> addCourse(@RequestBody Course course) {
         HashMap<String, Object> map = new HashMap<>();
         int retVal = -1;
-        if (course.getChapter() == 0 || course.getCourseId() == 0 || course.getUri() == null || course.getDuration() == 0) {
+        if (course.getChapter() == 0 || course.getCourseId() == 0 || course.getUri() == null) {
             map.put("status", retVal);
             return map;
         }

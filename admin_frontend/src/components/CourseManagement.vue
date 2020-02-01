@@ -5,35 +5,28 @@
                 style="width: 100%">
             <el-table-column
                     label="章节"
-                    width="200">
+                    width="220">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.chapter }}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     label="课程ID"
-                    width="200">
+                    width="220">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.courseId }}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     label="视频URI"
-                    width="200">
+                    width="220">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.uri }}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                    label="视频URI"
-                    width="200">
-                <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.duration }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
                     label="课后习题编号"
-                    width="200">
+                    width="220">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.exerciseId }}</span>
                 </template>
@@ -121,15 +114,18 @@
         },
         methods: {
             handleEdit(index, row) {
-                console.log(index, row);
                 this.editDialogFormVisible = true;
                 for (let key in this.form) {
                     this.form[key] = row[key];
                 }
             },
             handleDelete(index, row) {
-                alert("删除成功");
-                console.log(index, row);
+                axios.delete(
+                    url + "/admin/course/" + row.chapter + '/' + row.courseId,
+                ).then(response => (console.log(response)));
+
+                this.courses.splice(index, 1);
+                console.log("删除成功");
             },
             handleAddCourse() {
                 for (let key in this.form) {
@@ -138,7 +134,26 @@
                 this.addDialogFormVisible = true;
             },
             handleUpload() {
-                alert("新增课程成功");
+                let that = this;
+                axios({
+                    url: url + "/admin/course",
+                    method: "post",
+                    data: JSON.stringify(that.form),
+                    headers:
+                        {
+                            'Content-Type': 'application/json'
+                        }
+                }).then(response => {
+                    if (response.data === 1) {
+                        console.log("新增课程成功");
+                        that.courses.push(that.form);
+                    } else {
+                        console.log("添加出现错误，请检查")
+                    }
+                }).catch(reason => {
+                    console.log(reason)
+                });
+                that.addDialogFormVisible = false;
             },
             handleChangeUpload() {
                 let that = this;
