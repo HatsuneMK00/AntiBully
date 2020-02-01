@@ -61,6 +61,19 @@ public class ExerciseService {
         return null;
     }
 
+    /*
+    * 获取所有联系
+    * 管理员用
+    * */
+    public List<Exercise> getAllExercises() {
+        try {
+            return exerciseMapper.getAllExercises();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public int addExercise(Exercise exercise) {
         try {
             return exerciseMapper.addExercise(exercise);

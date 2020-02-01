@@ -3,7 +3,9 @@ package xyz.makise.antibully.backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.makise.antibully.backend.entity.Course;
+import xyz.makise.antibully.backend.entity.Exercise;
 import xyz.makise.antibully.backend.service.CourseService;
+import xyz.makise.antibully.backend.service.ExerciseService;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     CourseService courseService;
+    @Autowired
+    ExerciseService exerciseService;
 
     @GetMapping("/courses")
     List<Map<String, Object>> getAllCoursesAdmin() {
@@ -80,6 +84,11 @@ public class AdminController {
         } else {
             return 1;
         }
+    }
+
+    @GetMapping("/exercises")
+    List<Exercise> getAllExercisesAdmin() {
+        return exerciseService.getAllExercises();
     }
 
 }

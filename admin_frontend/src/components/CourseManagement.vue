@@ -45,7 +45,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-button type="primary" @click="handleAddCourse()" class="additional-button">新增课程<i
+        <el-button type="primary" @click="handleAddCourse()" style="margin-top: 50px">新增课程<i
                 class="el-icon-upload el-icon--right"/></el-button>
 
         <el-dialog title="课程编辑" :visible.sync="editDialogFormVisible">
@@ -104,6 +104,7 @@
                 editDialogFormVisible: false,
                 addDialogFormVisible: false,
                 formLabelWidth: "120px",
+                currentEditRow: null,
                 form: {
                     chapter: '',
                     courseId: '',
@@ -115,6 +116,7 @@
         methods: {
             handleEdit(index, row) {
                 this.editDialogFormVisible = true;
+                this.currentEditRow = row;
                 for (let key in this.form) {
                     this.form[key] = row[key];
                 }
@@ -166,8 +168,14 @@
                          'Content-Type': 'application/json'
                        }
                 })
-                    .then(response => (console.log(response)));
-                alert("课程修改成功");
+                    .then(response => {
+                        if (response.data === 1) {
+                            for (let key in that.form) {
+                                that.currentEditRow[key] = that.form[key];
+                            }
+                            console.log("课程修改成功");
+                        }
+                    });
                 this.editDialogFormVisible = false;
             },
         },
@@ -178,7 +186,6 @@
             axios
                 .get(url + "/admin/courses")
                 .then(function (response) {
-                    console.log(response.data);
                     that.courses = response.data;
                 })
         }
@@ -186,8 +193,5 @@
 </script>
 
 <style>
-    .additional-button {
-        margin-top: 50px;
-    }
 
 </style>

@@ -31,7 +31,7 @@ public interface ExerciseMapper {
     List<Exercise> getExercisesOfRepo(int repoId);
 
     /*
-    * 常规增删改
+    * 常规增删改查
     * */
     @Options(useGeneratedKeys = true, keyProperty = "exerciseId")
     @Insert("insert into exercise(content,answer,type,reason) values(#{content},#{answer},#{type},#{reason})")
@@ -42,4 +42,7 @@ public interface ExerciseMapper {
 
     @Delete("delete from exercise where exerciseId=#{exerciseId}")
     int deleteExercise(int exerciseId);
+
+    @Select("select * from exercise")
+    List<Exercise> getAllExercises();
 }

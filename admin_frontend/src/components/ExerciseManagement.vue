@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table
-                :data="exercises"
+                :data="exercises.filter(exercise => !search || exercise.content.toLowerCase().includes(search.toLowerCase()))"
                 style="width: 100%">
             <el-table-column type="expand">
                 <template slot-scope="props">
@@ -32,34 +32,48 @@
             </el-table-column>
             <el-table-column
                     label="题目ID"
-                    width="240">
+                    width="220">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.exerciseId }}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     label="题目类型"
-                    width="240">
+                    width="220">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.type }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column
+                    label="题干"
+                    width="440">
+                <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{ scope.row.content }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    align="right">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入关键字搜索"/>
+                </template>
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">编辑
-                    </el-button>
+                            @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
-                    </el-button>
+                            @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
                 </template>
             </el-table-column>
         </el-table>
+        <el-button type="primary" @click="handleAddExercise()" style="margin-top: 50px">新增题目<i
+                class="el-icon-upload el-icon--right"/></el-button>
 
-        <el-dialog title="题目编辑" :visible.sync="dialogFormVisible">
+        <el-dialog title="题目编辑" :visible.sync="editDialogFormVisible">
             <el-form :model="form">
                 <el-form-item label="题目ID" :label-width="formLabelWidth">
                     <el-input disabled v-model="form.exerciseId" autocomplete="off"/>
@@ -87,54 +101,22 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="editDialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleChangeUpload()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
+    import axios from 'axios'
+    import url from '../main.js'
     export default {
         name: "ExerciseManagement",
         data() {
             return {
-                exercises: [
-                    {
-                        exerciseId: 1,
-                        content: "exercise 1",
-                        answer: "A",
-                        type: "choice4",
-                        reason: "the reason why A is correct",
-                        choiceA: "choice A",
-                        choiceB: "choice B",
-                        choiceC: "choice C",
-                        choiceD: "choice D",
-                    },
-                    {
-                        exerciseId: 1,
-                        content: "exercise 1",
-                        answer: "A",
-                        type: "choice4",
-                        reason: "the reason why A is correct",
-                        choiceA: "choice A",
-                        choiceB: "choice B",
-                        choiceC: "choice C",
-                        choiceD: "choice D",
-                    },
-                    {
-                        exerciseId: 1,
-                        content: "exercise 1",
-                        answer: "A",
-                        type: "choice4",
-                        reason: "the reason why A is correct",
-                        choiceA: "choice A",
-                        choiceB: "choice B",
-                        choiceC: "choice C",
-                        choiceD: "choice D",
-                    }
-                ],
-                dialogFormVisible: false,
+                exercises: [],
+                editDialogFormVisible: false,
                 formLabelWidth: '120px',
                 form: {
                     exerciseId: '',
@@ -146,20 +128,52 @@
                     choiceB: '',
                     choiceC: '',
                     choiceD: '',
-                }
+                },
+                search: '',
             }
+        },
+        mounted() {
+            let that = this;
+            axios
+                .get(url + "/admin/exercises")
+                .then(response => {
+                    that.exercises = response.data;
+                })
         },
         methods: {
             handleEdit(index, row) {
-                this.dialogFormVisible = true;
+                this.editDialogFormVisible = true;
                 for (let key in this.form) {
                     this.form[key] = row[key];
                 }
-                console.log(index, row);
             },
             handleDelete(index, row) {
                 console.log(index, row);
             },
+            handleAddExercise() {
+
+            },
+            handleChangeUpload() {
+                let that = this;
+                axios({
+                    url: url + "/admin/exercise",
+                    method: "put",
+                    data: JSON.stringify(that.form),
+                    headers:
+                        {
+                            'Content-Type': 'application/json'
+                        }
+                })
+                    .then(response => {
+
+                    });
+                alert("课程修改成功");
+
+                this.editDialogFormVisible = false
+            },
+            handleUpload() {
+
+            }
         }
     }
 </script>
