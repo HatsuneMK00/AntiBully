@@ -92,12 +92,22 @@ public class ExerciseService {
         return 0;
     }
 
-    public int updateExerciseAnswer(Exercise exercise) {
+    public int updateExercise(Exercise exercise) {
         try {
-            return exerciseMapper.updateExerciseAnswer(exercise);
+            return exerciseMapper.updateExercise(exercise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return 0;
+        return -1;
+    }
+
+    public boolean validateExercise(Exercise exercise) {
+        if (exercise.getAnswer() == null || exercise.getContent() == null
+                || exercise.getReason() == null || exercise.getType() == null
+                || exercise.getChoiceA() == null || exercise.getChoiceB() == null
+                || exercise.getChoiceC() == null || exercise.getChoiceD() == null){
+            return false;
+        }
+        return true;
     }
 }

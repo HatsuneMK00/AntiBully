@@ -34,11 +34,13 @@ public interface ExerciseMapper {
     * 常规增删改查
     * */
     @Options(useGeneratedKeys = true, keyProperty = "exerciseId")
-    @Insert("insert into exercise(content,answer,type,reason) values(#{content},#{answer},#{type},#{reason})")
+    @Insert("insert into exercise(content,answer,type,reason,choiceA,choiceB,choiceC,choiceD) " +
+            "values(#{content},#{answer},#{type},#{reason},#{choiceA},#{choiceB},#{choiceC},#{choiceD})")
     int addExercise(Exercise exercise);
 
-    @Update("update exercise set answer=#{answer} where exerciseId=#{exerciseId}")
-    int updateExerciseAnswer(Exercise exercise);
+    @Update("update exercise set content=#{content},answer=#{answer},type=#{type},reason=#{reason}," +
+            "choiceA=#{choiceA},choiceB=#{choiceB},choiceC=#{choiceC},choiceD=#{choiceD} where exerciseId=#{exerciseId}")
+    int updateExercise(Exercise exercise);
 
     @Delete("delete from exercise where exerciseId=#{exerciseId}")
     int deleteExercise(int exerciseId);

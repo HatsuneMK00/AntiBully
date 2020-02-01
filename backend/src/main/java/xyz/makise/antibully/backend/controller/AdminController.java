@@ -61,11 +61,11 @@ public class AdminController {
     }
 
     @PostMapping("/course")
-    int addCourseAdmin(@RequestBody Map<String,Object> params) {
+    int addCourseAdmin(@RequestBody Map<String, Object> params) {
         int retVal1;
         int retVal2;
         if (!params.containsKey("chapter") || !params.containsKey("courseId")
-                || !params.containsKey("uri") || !params.containsKey("exerciseId")){
+                || !params.containsKey("uri") || !params.containsKey("exerciseId")) {
             return -1;
         }
         Course course = new Course();
@@ -91,4 +91,25 @@ public class AdminController {
         return exerciseService.getAllExercises();
     }
 
+    @PutMapping("/exercise")
+    int updateExerciseAdmin(@RequestBody Exercise exercise) {
+        return exerciseService.updateExercise(exercise);
+    }
+
+    @DeleteMapping("/exercise/{exerciseId}")
+    int deleteExerciseAdmin(@PathVariable("exerciseId") int exerciseId) {
+        return exerciseService.deleteExercise(exerciseId);
+    }
+
+    @PostMapping("/exercise")
+    Exercise addExercise(@RequestBody Exercise exercise) {
+        if (!exerciseService.validateExercise(exercise)) {
+            return null;
+        }
+        int retVal = exerciseService.addExercise(exercise);
+        if (retVal != 1) {
+            return null;
+        }
+        return exercise;
+    }
 }

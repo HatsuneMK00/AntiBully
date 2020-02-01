@@ -70,7 +70,7 @@ public class ExerciseController {
             map.put("status", retVal);
             return map;
         }
-        retVal = exerciseService.updateExerciseAnswer(exercise);
+        retVal = exerciseService.updateExercise(exercise);
         map.put("status", retVal);
         map.put("exercise", exercise);
         return map;

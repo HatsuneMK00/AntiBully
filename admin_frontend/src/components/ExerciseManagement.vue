@@ -81,6 +81,9 @@
                 <el-form-item label="题干" :label-width="formLabelWidth">
                     <el-input v-model="form.content" autocomplete="off"/>
                 </el-form-item>
+                <el-form-item label="题目类型" :label-width="formLabelWidth">
+                    <el-input v-model="form.type" autocomplete="off"/>
+                </el-form-item>
                 <el-form-item label="选项A" :label-width="formLabelWidth">
                     <el-input v-model="form.choiceA" autocomplete="off"/>
                 </el-form-item>
@@ -105,6 +108,39 @@
                 <el-button type="primary" @click="handleChangeUpload()">确 定</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="添加题目" :visible.sync="addDialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="题干" :label-width="formLabelWidth">
+                    <el-input v-model="form.content" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="题目类型" :label-width="formLabelWidth">
+                    <el-input v-model="form.type" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="选项A" :label-width="formLabelWidth">
+                    <el-input v-model="form.choiceA" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="选项B" :label-width="formLabelWidth">
+                    <el-input v-model="form.choiceB" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="选项C" :label-width="formLabelWidth">
+                    <el-input v-model="form.choiceC" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="选项D" :label-width="formLabelWidth">
+                    <el-input v-model="form.choiceD" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="正确答案" :label-width="formLabelWidth">
+                    <el-input v-model="form.answer" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="理由" :label-width="formLabelWidth">
+                    <el-input v-model="form.reason" autocomplete="off"/>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="addDialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleUpload()">添 加</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -117,7 +153,9 @@
             return {
                 exercises: [],
                 editDialogFormVisible: false,
+                addDialogFormVisible: false,
                 formLabelWidth: '120px',
+                currentEditRow: null,
                 form: {
                     exerciseId: '',
                     content: '',
@@ -143,15 +181,30 @@
         methods: {
             handleEdit(index, row) {
                 this.editDialogFormVisible = true;
+                this.currentEditRow = row;
                 for (let key in this.form) {
                     this.form[key] = row[key];
                 }
             },
             handleDelete(index, row) {
-                console.log(index, row);
+                let that = this;
+                axios.delete(
+                    url + "/admin/exercise/" + row.exerciseId,
+                ).then(response => {
+                    console.log(response);
+                    if (response.data === 1) {
+                        console.log("后台删除成功");
+                        that.exercises.splice(index, 1);
+                    }
+                }).catch(reason => {
+                    console.log(reason);
+                });
             },
             handleAddExercise() {
-
+                for (let key in this.form) {
+                    this.form[key] = ''
+                }
+                this.addDialogFormVisible = true;
             },
             handleChangeUpload() {
                 let that = this;
@@ -165,14 +218,40 @@
                         }
                 })
                     .then(response => {
-
+                        if (response.data === 1) {
+                            for (let key in that.form) {
+                                that.currentEditRow[key] = that.form[key];
+                            }
+                            console.log("题目修改成功");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
                     });
-                alert("课程修改成功");
-
                 this.editDialogFormVisible = false
             },
             handleUpload() {
-
+                let that = this;
+                axios({
+                    url: url + "/admin/exercise",
+                    method: "post",
+                    data: JSON.stringify(that.form),
+                    headers:
+                        {
+                            'Content-Type': 'application/json'
+                        }
+                }).then(response => {
+                    //由于Exercise有自增主键，因此这里的处理方法有所不同
+                    if (response.data !== null) {
+                        console.log("后台新增题目成功");
+                        that.exercises.push(response.data);
+                    } else {
+                        console.log("后台新增题目出现错误，请检查")
+                    }
+                }).catch(reason => {
+                    console.log(reason)
+                });
+                that.addDialogFormVisible = false;
             }
         }
     }

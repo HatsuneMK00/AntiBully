@@ -122,12 +122,15 @@
                 }
             },
             handleDelete(index, row) {
+                let that = this;
                 axios.delete(
                     url + "/admin/course/" + row.chapter + '/' + row.courseId,
-                ).then(response => (console.log(response)));
-
-                this.courses.splice(index, 1);
-                console.log("删除成功");
+                ).then(response => {
+                    console.log("后台删除课程成功");
+                    that.courses.splice(index, 1);
+                }).catch(reason => {
+                    console.log(reason);
+                });
             },
             handleAddCourse() {
                 for (let key in this.form) {
@@ -150,7 +153,7 @@
                         console.log("新增课程成功");
                         that.courses.push(that.form);
                     } else {
-                        console.log("添加出现错误，请检查")
+                        console.log("后台添加出现错误，请检查")
                     }
                 }).catch(reason => {
                     console.log(reason)
