@@ -12,11 +12,19 @@ import java.util.Map;
 
 @Repository
 public interface CourseMapper {
+    @Select("select course.chapter,course.courseId,uri,duration,exerciseId " +
+            "from course join belong_course " +
+            "on course.chapter=belong_course.chapter and course.courseId=belong_course.courseId")
+    List<Map<String,Object>> getAllCoursesWithExercise();
+
     @Select("select * from course where chapter=#{chapter}")
     List<Course> getCoursesOfChapter(int chapter);
 
     @Select("select * from course where chapter=#{chapter} and courseId=#{courseId}")
     Course getCourse(int chapter, int courseId);
+
+    @Update("update belong_course set exerciseId=#{exerciseId} where chapter=#{chapter} and courseId=#{courseId}")
+    int updateBindOfExerciseAndCourse(int exerciseId, int chapter, int courseId);
 
     @Update("update course set uri=#{uri} where chapter=#{chapter} and courseId=#{courseId}")
     int updateCourseUri(Course course);

@@ -5,30 +5,37 @@
                 style="width: 100%">
             <el-table-column
                     label="章节"
-                    width="240">
+                    width="200">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.chapter }}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     label="课程ID"
-                    width="240">
+                    width="200">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.courseId }}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     label="视频URI"
-                    width="240">
+                    width="200">
                 <template slot-scope="scope">
                     <span style="margin-left: 10px">{{ scope.row.uri }}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                    label="课后习题编号"
-                    width="240">
+                    label="视频URI"
+                    width="200">
                 <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.exercise }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.duration }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    label="课后习题编号"
+                    width="200">
+                <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{ scope.row.exerciseId }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作">
@@ -45,7 +52,8 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-button type="primary" @click="handleAddCourse()" class="additional-button">新增课程<i class="el-icon-upload el-icon--right"/></el-button>
+        <el-button type="primary" @click="handleAddCourse()" class="additional-button">新增课程<i
+                class="el-icon-upload el-icon--right"/></el-button>
 
         <el-dialog title="课程编辑" :visible.sync="editDialogFormVisible">
             <el-form :model="form">
@@ -59,7 +67,7 @@
                     <el-input v-model="form.uri" autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="课后习题ID" :label-width="formLabelWidth">
-                    <el-input v-model="form.exercise" autocomplete="off"/>
+                    <el-input v-model="form.exerciseId" autocomplete="off"/>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -80,7 +88,7 @@
                     <el-input v-model="form.uri" autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="课后习题ID" :label-width="formLabelWidth">
-                    <el-input v-model="form.exercise" autocomplete="off"/>
+                    <el-input v-model="form.exerciseId" autocomplete="off"/>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -92,37 +100,14 @@
 </template>
 
 <script>
+    import axios from 'axios'
+    import url from '../main.js'
+
     export default {
         name: "CourseManagement",
         data() {
             return {
-                courses: [
-                    {
-                        chapter: 1,
-                        courseId: 1,
-                        uri: '1-1',
-                        exercise: 1
-                    },
-                    {
-                        chapter: 1,
-                        courseId: 2,
-                        uri: '1-2',
-                        exercise: 2
-
-                    },
-                    {
-                        chapter: 2,
-                        courseId: 1,
-                        uri: '2-1',
-                        exercise: 3,
-                    },
-                    {
-                        chapter: 2,
-                        courseId: 2,
-                        uri: '2-2',
-                        exercise: 4
-                    }
-                ],
+                courses: [],
                 editDialogFormVisible: false,
                 addDialogFormVisible: false,
                 formLabelWidth: "120px",
@@ -130,7 +115,7 @@
                     chapter: '',
                     courseId: '',
                     uri: '',
-                    exercise: ''
+                    exerciseId: ''
                 }
             }
         },
@@ -156,14 +141,37 @@
                 alert("新增课程成功");
             },
             handleChangeUpload() {
-                alert("课程修改成功")
-            }
+                let that = this;
+                axios({
+                    url: url + "/admin/course",
+                    method: "put",
+                    data: JSON.stringify(that.form),
+                    headers:
+                       {
+                         'Content-Type': 'application/json'
+                       }
+                })
+                    .then(response => (console.log(response)));
+                alert("课程修改成功");
+                this.editDialogFormVisible = false;
+            },
+        },
+        mounted() {
+            //TODO: 记笔记 这里this指向在then里面就变了 需要在外面存一下this
+            let that = this;
+            console.log(url + '/admin/courses');
+            axios
+                .get(url + "/admin/courses")
+                .then(function (response) {
+                    console.log(response.data);
+                    that.courses = response.data;
+                })
         }
     }
 </script>
 
 <style>
-    .additional-button{
+    .additional-button {
         margin-top: 50px;
     }
 
