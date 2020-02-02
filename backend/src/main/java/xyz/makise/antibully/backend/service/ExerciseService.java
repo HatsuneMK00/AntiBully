@@ -52,6 +52,19 @@ public class ExerciseService {
         return exercises;
     }
 
+    /*
+    * 返回repo的所有题目的id
+    * 管理员用
+    * */
+    public List<Integer> getExerciseIdsOfRepo(int repoId) {
+        try {
+            return exerciseMapper.getExerciseIdsOfRepo(repoId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public Exercise getExercise(int exerciseId) {
         try {
             return exerciseMapper.getExercise(exerciseId);

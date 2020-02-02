@@ -1,16 +1,18 @@
 package xyz.makise.antibully.backend.controller;
 
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.makise.antibully.backend.entity.Course;
 import xyz.makise.antibully.backend.entity.Exercise;
+import xyz.makise.antibully.backend.entity.ExerciseRepo;
 import xyz.makise.antibully.backend.entity.HelpInfo;
 import xyz.makise.antibully.backend.service.CourseService;
+import xyz.makise.antibully.backend.service.ExerciseRepoService;
 import xyz.makise.antibully.backend.service.ExerciseService;
 import xyz.makise.antibully.backend.service.HelpInfoService;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /*
@@ -30,6 +32,8 @@ public class AdminController {
     ExerciseService exerciseService;
     @Autowired
     HelpInfoService helpInfoService;
+    @Autowired
+    ExerciseRepoService exerciseRepoService;
 
     @GetMapping("/courses")
     List<Map<String, Object>> getAllCoursesAdmin() {
@@ -126,4 +130,36 @@ public class AdminController {
     int helpInfoHandledAdmin(@PathVariable("infoId") int infoId) {
         return helpInfoService.makeHelpInfoHandled(infoId);
     }
+
+    @GetMapping("/repos")
+    List<ExerciseRepo> getAllReposAdmin() {
+        return exerciseRepoService.getAllExerciseRepos();
+    }
+
+    @GetMapping("/repo/{repoId}")
+    List<Integer> getExercisesOfRepo(@PathVariable("repoId") int repoId) {
+        return exerciseService.getExerciseIdsOfRepo(repoId);
+    }
+
+    @PostMapping("/repo/bindRepoAndExercise")
+    int bindRepoAndExerciseAdmin(@RequestBody Map<String,Object> params) {
+        List<Integer> selected = (List<Integer>) params.get("selected");
+        int repoId = (int) params.get("repoId");
+        List<Integer> oldSelected = exerciseService.getExerciseIdsOfRepo(repoId);
+        List<Integer> intersect = new ArrayList<>(selected);
+
+//  求selected和oldSelected的交集
+        intersect.retainAll(oldSelected);
+//  selectedSet现在表示需要新增的绑定
+        selected.removeAll(intersect);
+//  oldSelectedSet表示删除的绑定
+        oldSelected.removeAll(intersect);
+
+        int retVal = 0;
+        retVal += exerciseRepoService.bindExercisesToRepo(repoId, selected);
+        retVal += exerciseRepoService.unbindExercisesAndRepo(repoId, oldSelected);
+
+        return retVal;
+    }
+
 }

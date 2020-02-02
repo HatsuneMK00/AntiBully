@@ -20,6 +20,9 @@ public interface ExerciseRepoMapper {
     @Insert("insert into belong_repo(repoId,exerciseId) values(#{repoId},#{exerciseId})")
     int bindExerciseToRepo(int repoId, int exerciseId);
 
+    @Delete("delete from belong_repo where repoId=#{repoId} and exerciseId=#{exerciseId}")
+    int unbindExerciseAndRepo(int repoId, int exerciseId);
+
     /*
     * 和用户相关
     * */

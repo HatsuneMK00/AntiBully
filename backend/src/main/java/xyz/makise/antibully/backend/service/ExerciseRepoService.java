@@ -1,5 +1,6 @@
 package xyz.makise.antibully.backend.service;
 
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,32 @@ public class ExerciseRepoService {
         int retVal = 0;
         try {
             retVal = exerciseRepoMapper.bindExerciseToRepo(repoId, exerciseId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return retVal;
+    }
+
+    public int bindExercisesToRepo(int repoId, List<Integer> exerciseIds) {
+        int retVal = 0;
+        try {
+            for (int exerciseId :
+                    exerciseIds) {
+                retVal += exerciseRepoMapper.bindExerciseToRepo(repoId, exerciseId);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return retVal;
+    }
+
+    public int unbindExercisesAndRepo(int repoId, List<Integer> exerciseIds) {
+        int retVal = 0;
+        try {
+            for (int exerciseId :
+                    exerciseIds) {
+                retVal += exerciseRepoMapper.unbindExerciseAndRepo(repoId, exerciseId);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

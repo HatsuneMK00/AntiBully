@@ -25,10 +25,13 @@ public interface ExerciseMapper {
     /*
     * 和题库相关
     * */
-    @Select("select exercise.exerciseId,content,answer,type,reason,choiceA,choiceB,choiceC,choiceD" +
+    @Select("select exercise.exerciseId,content,answer,type,reason,choiceA,choiceB,choiceC,choiceD " +
             "from exercise join belong_repo on exercise.exerciseId=belong_repo.exerciseId " +
             "where repoId=#{repoId}")
     List<Exercise> getExercisesOfRepo(int repoId);
+
+    @Select("select exerciseId from belong_repo where repoId=#{repoId}")
+    List<Integer> getExerciseIdsOfRepo(int repoId);
 
     /*
     * 常规增删改查
