@@ -72,9 +72,7 @@
                 ).then(response => {
                     if (response.data === 1) {
                         row.status = 'handled';
-                        console.log("后台求助信息处理成功");
                     } else {
-                        console.log("后台返回值" + response.data)
                     }
                 }).catch(reason => {
                     console.log(reason);

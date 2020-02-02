@@ -126,7 +126,6 @@
                 axios.delete(
                     url + "/admin/course/" + row.chapter + '/' + row.courseId,
                 ).then(response => {
-                    console.log("后台删除课程成功");
                     that.courses.splice(index, 1);
                 }).catch(reason => {
                     console.log(reason);
@@ -150,13 +149,11 @@
                         }
                 }).then(response => {
                     if (response.data === 1) {
-                        console.log("新增课程成功");
                         that.courses.push(that.form);
                     } else {
-                        console.log("后台添加出现错误，请检查")
                     }
                 }).catch(reason => {
-                    console.log(reason)
+                    console.log(reason);
                 });
                 that.addDialogFormVisible = false;
             },
@@ -176,7 +173,6 @@
                             for (let key in that.form) {
                                 that.currentEditRow[key] = that.form[key];
                             }
-                            console.log("课程修改成功");
                         }
                     });
                 this.editDialogFormVisible = false;

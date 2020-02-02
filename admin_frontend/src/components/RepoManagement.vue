@@ -113,7 +113,6 @@
                     url + "/admin/repo/" + row.repoId,
                 ).then(response => {
                     if (response.data === 1) {
-                        console.log("后台删除成功");
                         that.repos.splice(index, 1);
                     }
                 }).catch(reason => {
@@ -148,10 +147,8 @@
                     //这边即使是错误的情况 后端返回null response.data依旧是非null的值 很奇怪
                     //FIXME:必须要用状态码来让前端判断后端处理情况，不能用是否为null判断
                     if (response.data !== null) {
-                        console.log("后台新增题库成功");
                         that.repos.push(response.data);
                     } else {
-                        console.log("后台新增题库出现错误，请检查")
                     }
                 }).catch(reason => {
                     console.log(reason)
@@ -174,7 +171,6 @@
                             for (let key in that.form) {
                                 that.currentEditRow[key] = that.form[key];
                             }
-                            console.log("课程修改成功");
                         }
                     });
                 this.editDialogFormVisible = false;
@@ -198,7 +194,6 @@
                 axios.get(
                     url + '/admin/repo/' + row.repoId
                 ).then(response => {
-                    console.log(response.data);
                     that.selected = response.data;
                 }).catch(reason => {
                     console.log(reason);
@@ -222,9 +217,7 @@
                         }
                 }).then(response => {
                     if (response.data >= 1) {
-                        console.log("后端更新绑定成功");
                     } else {
-                        console.log(response.data)
                     }
                 }).catch(reason => {
                     console.log(reason);

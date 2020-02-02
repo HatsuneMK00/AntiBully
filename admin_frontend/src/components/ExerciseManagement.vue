@@ -192,7 +192,6 @@
                     url + "/admin/exercise/" + row.exerciseId,
                 ).then(response => {
                     if (response.data === 1) {
-                        console.log("后台删除成功");
                         that.exercises.splice(index, 1);
                     }
                 }).catch(reason => {
@@ -221,7 +220,6 @@
                             for (let key in that.form) {
                                 that.currentEditRow[key] = that.form[key];
                             }
-                            console.log("题目修改成功");
                         }
                     })
                     .catch(error => {
@@ -242,10 +240,8 @@
                 }).then(response => {
                     //由于Exercise有自增主键，因此这里的处理方法有所不同
                     if (response.data !== null) {
-                        console.log("后台新增题目成功");
                         that.exercises.push(response.data);
                     } else {
-                        console.log("后台新增题目出现错误，请检查")
                     }
                 }).catch(reason => {
                     console.log(reason)

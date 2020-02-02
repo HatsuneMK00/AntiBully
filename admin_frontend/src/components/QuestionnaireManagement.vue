@@ -104,10 +104,8 @@
                     url + "/admin/questionnaire/" + row.questionnaireId,
                 ).then(response => {
                     if (response.data === 1) {
-                        console.log("后台删除成功");
                         that.questionnaires.splice(index, 1);
                     } else {
-                        console.log(response.data);
                     }
                 }).catch(reason => {
                     console.log(reason);
@@ -127,10 +125,8 @@
                     //由于Questionnaire有自增主键，因此这里的处理方法有所不同
                     //FIXME:必须要用状态码来让前端判断后端处理情况，不能用是否为null判断
                     if (response.data !== null) {
-                        console.log("后台新增问卷成功");
                         that.questionnaires.push(response.data);
                     } else {
-                        console.log("后台新增问卷出现错误，请检查");
                     }
                 }).catch(reason => {
                     console.log(reason);
@@ -159,9 +155,7 @@
                             for (let key in that.form) {
                                 that.currentEditRow[key] = that.form[key];
                             }
-                            console.log("问卷修改成功");
                         } else {
-                            console.log(response.data);
                         }
                     });
                 this.editDialogFormVisible = false;
