@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.makise.antibully.backend.entity.Course;
 import xyz.makise.antibully.backend.entity.Exercise;
+import xyz.makise.antibully.backend.entity.HelpInfo;
 import xyz.makise.antibully.backend.service.CourseService;
 import xyz.makise.antibully.backend.service.ExerciseService;
+import xyz.makise.antibully.backend.service.HelpInfoService;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ public class AdminController {
     CourseService courseService;
     @Autowired
     ExerciseService exerciseService;
+    @Autowired
+    HelpInfoService helpInfoService;
 
     @GetMapping("/courses")
     List<Map<String, Object>> getAllCoursesAdmin() {
@@ -111,5 +115,15 @@ public class AdminController {
             return null;
         }
         return exercise;
+    }
+
+    @GetMapping("/helpInfos")
+    List<HelpInfo> getAllHelpInfosAdmin() {
+        return helpInfoService.getAllHelpInfos();
+    }
+
+    @PutMapping("/helpInfoHandled/{infoId}")
+    int helpInfoHandledAdmin(@PathVariable("infoId") int infoId) {
+        return helpInfoService.makeHelpInfoHandled(infoId);
     }
 }

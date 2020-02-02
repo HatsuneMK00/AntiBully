@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table
-                :data="helpInfos"
+                :data="helpInfos.filter(helpInfo => helpInfo.status.toLowerCase() === currentNav.toLowerCase())"
                 style="width: 100%">
             <el-table-column
                     label="求助信息ID"
@@ -29,6 +29,7 @@
                     <el-button
                             size="mini"
                             type="primary"
+                            :disabled = "buttonDisabled"
                             @click="handleDone(scope.$index, scope.row)">完成
                     </el-button>
                 </template>
@@ -38,65 +39,55 @@
 </template>
 
 <script>
+    import url from "@/main";
+    import axios from "axios"
+
     export default {
         name: "HelpInfoManagementMainContent",
         data() {
             return {
-                helpInfosHandled: [
-                    {
-                        infoId: 1,
-                        contact: '13113111311',
-                        describe: 'i feel bad',
-                        status: 'handled'
-                    },
-                    {
-                        infoId: 2,
-                        contact: '13113111311',
-                        describe: 'i feel bad',
-                        status: 'handled'
-                    },
-                    {
-                        infoId: 3,
-                        contact: '13113111311',
-                        describe: 'i feel bad',
-                        status: 'handled'
-                    }
-                ],
-                helpInfosUnhandled: [
-                    {
-                        infoId: 4,
-                        contact: '13113111311',
-                        describe: 'i feel bad',
-                        status: 'unhandled'
-                    },
-                    {
-                        infoId: 5,
-                        contact: '13113111311',
-                        describe: 'i feel bad',
-                        status: 'unhandled'
-                    },
-                ],
+                currentNav: 'unhandled',
+                buttonDisabled: false,
                 helpInfos: []
             }
         },
-        created() {
-            this.helpInfos = this.helpInfosUnhandled
-        },
         watch: {
             /*
-            * 监听路由变化 更新helpInfos的内容
+            * 监听路由变化 更新currentNav的内容
             * */
             $route: {
                 handler: function(val, oldVal){
-                    if (val.params.status === 'unhandled') {
-                        this.helpInfos = this.helpInfosUnhandled;
-                    } else {
-                        this.helpInfos = this.helpInfosHandled;
-                    }
+                    this.currentNav = val.params.status;
+                    // 设置button是否可用 已完成的求助信息里button不可用
+                    this.buttonDisabled = val.params.status !== 'unhandled';
                 },
                 // 深度观察监听
                 deep: true
             }
+        },
+        methods: {
+            handleDone(index, row) {
+                axios.put(
+                    url + '/admin/helpInfoHandled/' + row.infoId
+                ).then(response => {
+                    if (response.data === 1) {
+                        row.status = 'handled';
+                        console.log("后台求助信息处理成功");
+                    } else {
+                        console.log("后台返回值" + response.data)
+                    }
+                }).catch(reason => {
+                    console.log(reason);
+                });
+            }
+        },
+        mounted() {
+            let that = this;
+            axios
+                .get(url + "/admin/helpInfos")
+                .then(function (response) {
+                    that.helpInfos = response.data;
+                })
         }
     }
 </script>

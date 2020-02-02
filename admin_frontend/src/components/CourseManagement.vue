@@ -185,7 +185,6 @@
         mounted() {
             //TODO: 记笔记 这里this指向在then里面就变了 需要在外面存一下this
             let that = this;
-            console.log(url + '/admin/courses');
             axios
                 .get(url + "/admin/courses")
                 .then(function (response) {
