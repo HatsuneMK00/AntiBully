@@ -122,4 +122,8 @@ public class ExerciseRepoService {
         }
         return 0;
     }
+
+    public boolean validateRepo(ExerciseRepo repo) {
+        return repo.getTitle() != null;
+    }
 }

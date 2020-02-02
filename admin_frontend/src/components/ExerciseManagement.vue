@@ -191,7 +191,6 @@
                 axios.delete(
                     url + "/admin/exercise/" + row.exerciseId,
                 ).then(response => {
-                    console.log(response);
                     if (response.data === 1) {
                         console.log("后台删除成功");
                         that.exercises.splice(index, 1);

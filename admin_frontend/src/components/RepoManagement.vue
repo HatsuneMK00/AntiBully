@@ -17,13 +17,6 @@
                     <span style="margin-left: 10px">{{ scope.row.title }}</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                    label="题目数量"
-                    width="240">
-                <template slot-scope="scope">
-                    <span style="margin-left: 10px">{{ scope.row.exerciseNum }}</span>
-                </template>
-            </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button
@@ -43,6 +36,23 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-button type="primary" @click="handleAddRepo()" style="margin-top: 50px">新增题库<i
+                class="el-icon-upload el-icon--right"/></el-button>
+
+        <el-dialog title="题库编辑" :visible.sync="editDialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="题库ID" :label-width="formLabelWidth">
+                    <el-input disabled v-model="form.repoId" autocomplete="off"/>
+                </el-form-item>
+                <el-form-item label="题库名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.title" autocomplete="off"/>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="editDialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleChangeUpload()">确 定</el-button>
+            </div>
+        </el-dialog>
 
         <el-dialog title="管理题目" :visible.sync="manageDialogVisible">
             <el-transfer
@@ -59,6 +69,18 @@
                 <el-button type="primary" @click="handleManageExercisesUpload()">确 定</el-button>
             </span>
         </el-dialog>
+
+        <el-dialog title="新增题库" :visible.sync="addDialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.title" autocomplete="off"/>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="addDialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleUpload()">完 成</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -73,17 +95,87 @@
                 repos: [],
                 manageDialogVisible: false,
                 editDialogFormVisible: false,
+                addDialogFormVisible: false,
                 exercises: [],
                 selected: [],
                 currentEditRow: null,
+                formLabelWidth: "120px",
+                form: {
+                    repoId: null,
+                    title: '',
+                }
             }
         },
         methods: {
             handleDelete(index, row) {
-                console.log(index, row);
+                let that = this;
+                axios.delete(
+                    url + "/admin/repo/" + row.repoId,
+                ).then(response => {
+                    if (response.data === 1) {
+                        console.log("后台删除成功");
+                        that.repos.splice(index, 1);
+                    }
+                }).catch(reason => {
+                    console.log(reason);
+                });
             },
             handleEdit(index, row) {
-                console.log(index, row);
+                this.editDialogFormVisible = true;
+                this.currentEditRow = row;
+                for (let key in this.form) {
+                    this.form[key] = row[key];
+                }
+            },
+            handleAddRepo() {
+                for (let key in this.form) {
+                    this.form[key] = ''
+                }
+                this.addDialogFormVisible = true;
+            },
+            handleUpload() {
+                let that = this;
+                axios({
+                    url: url + "/admin/repo",
+                    method: "post",
+                    data: JSON.stringify(that.form),
+                    headers:
+                        {
+                            'Content-Type': 'application/json'
+                        }
+                }).then(response => {
+                    //由于Repo有自增主键，因此这里的处理方法有所不同
+                    if (response.data !== null) {
+                        console.log("后台新增题库成功");
+                        that.repos.push(response.data);
+                    } else {
+                        console.log("后台新增题库出现错误，请检查")
+                    }
+                }).catch(reason => {
+                    console.log(reason)
+                });
+                that.addDialogFormVisible = false;
+            },
+            handleChangeUpload() {
+                let that = this;
+                axios({
+                    url: url + "/admin/repo",
+                    method: "put",
+                    data: JSON.stringify(that.form),
+                    headers:
+                        {
+                            'Content-Type': 'application/json'
+                        }
+                })
+                    .then(response => {
+                        if (response.data === 1) {
+                            for (let key in that.form) {
+                                that.currentEditRow[key] = that.form[key];
+                            }
+                            console.log("课程修改成功");
+                        }
+                    });
+                this.editDialogFormVisible = false;
             },
             handleManageExercises(index, row) {
                 let that = this;
@@ -111,7 +203,7 @@
                 });
 
                 this.currentEditRow = row;
-                this.manageDialogTableVisible = true;
+                this.manageDialogVisible = true;
             },
             handleManageExercisesUpload() {
                 let that = this;
@@ -136,7 +228,7 @@
                     console.log(reason);
                 });
 
-                this.manageDialogTableVisible = false;
+                this.manageDialogVisible = false;
             }
         },
         mounted() {
