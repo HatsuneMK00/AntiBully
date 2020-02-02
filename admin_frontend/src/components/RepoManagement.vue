@@ -145,6 +145,8 @@
                         }
                 }).then(response => {
                     //由于Repo有自增主键，因此这里的处理方法有所不同
+                    //这边即使是错误的情况 后端返回null response.data依旧是非null的值 很奇怪
+                    //FIXME:必须要用状态码来让前端判断后端处理情况，不能用是否为null判断
                     if (response.data !== null) {
                         console.log("后台新增题库成功");
                         that.repos.push(response.data);

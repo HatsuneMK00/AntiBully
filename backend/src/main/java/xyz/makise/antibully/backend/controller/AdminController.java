@@ -175,12 +175,10 @@ public class AdminController {
     @PostMapping("/repo")
     ExerciseRepo addRepoAdmin(@RequestBody ExerciseRepo repo) {
         if (!exerciseRepoService.validateRepo(repo)) {
-            System.out.println("参数问题");
             return null;
         }
         int retVal = exerciseRepoService.addExerciseRepo(repo);
         if (retVal != 1) {
-            System.out.println("添加失败");
             return null;
         }
         return repo;
