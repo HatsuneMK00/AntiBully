@@ -3,14 +3,8 @@ package xyz.makise.antibully.backend.controller;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import xyz.makise.antibully.backend.entity.Course;
-import xyz.makise.antibully.backend.entity.Exercise;
-import xyz.makise.antibully.backend.entity.ExerciseRepo;
-import xyz.makise.antibully.backend.entity.HelpInfo;
-import xyz.makise.antibully.backend.service.CourseService;
-import xyz.makise.antibully.backend.service.ExerciseRepoService;
-import xyz.makise.antibully.backend.service.ExerciseService;
-import xyz.makise.antibully.backend.service.HelpInfoService;
+import xyz.makise.antibully.backend.entity.*;
+import xyz.makise.antibully.backend.service.*;
 
 import java.util.*;
 
@@ -26,14 +20,26 @@ import java.util.*;
 @CrossOrigin
 @RequestMapping("/admin")
 public class AdminController {
-    @Autowired
+    final
     CourseService courseService;
-    @Autowired
+    final
     ExerciseService exerciseService;
-    @Autowired
+    final
     HelpInfoService helpInfoService;
-    @Autowired
+    final
     ExerciseRepoService exerciseRepoService;
+    final
+    QuestionnaireService questionnaireService;
+
+    public AdminController(CourseService courseService, ExerciseService exerciseService,
+                           HelpInfoService helpInfoService, ExerciseRepoService exerciseRepoService,
+                           QuestionnaireService questionnaireService) {
+        this.courseService = courseService;
+        this.exerciseService = exerciseService;
+        this.helpInfoService = helpInfoService;
+        this.exerciseRepoService = exerciseRepoService;
+        this.questionnaireService = questionnaireService;
+    }
 
     @GetMapping("/courses")
     List<Map<String, Object>> getAllCoursesAdmin() {
@@ -182,6 +188,33 @@ public class AdminController {
             return null;
         }
         return repo;
+    }
+
+    @GetMapping("/questionnaires")
+    List<Questionnaire> getAllQuestionnairesAdmin() {
+        return questionnaireService.getAllQuestionnaires();
+    }
+
+    @PostMapping("/questionnaire")
+    Questionnaire addQuestionnaireAdmin(@RequestBody Questionnaire questionnaire) {
+        if (!questionnaireService.validateQuestionnaire(questionnaire)) {
+            return null;
+        }
+        int retVal = questionnaireService.addQuestionnaire(questionnaire);
+        if (retVal != 1) {
+            return null;
+        }
+        return questionnaire;
+    }
+
+    @PutMapping("/questionnaire")
+    int updateQuestionnaireAdmin(@RequestBody Questionnaire questionnaire) {
+        return questionnaireService.updateQuestionnaireUri(questionnaire);
+    }
+
+    @DeleteMapping("/questionnaire/{questionnaireId}")
+    int deleteQuestionnaireAdmin(@PathVariable("questionnaireId") int questionnaireId) {
+        return questionnaireService.deleteQuestionnaire(questionnaireId);
     }
 
 }

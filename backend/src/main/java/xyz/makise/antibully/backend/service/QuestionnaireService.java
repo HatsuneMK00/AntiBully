@@ -51,7 +51,7 @@ public class QuestionnaireService {
 
     public int updateQuestionnaireUri(Questionnaire questionnaire) {
         try {
-            questionnaireMapper.updateQuestionnaireUri(questionnaire);
+            return questionnaireMapper.updateQuestionnaireUri(questionnaire);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -60,11 +60,15 @@ public class QuestionnaireService {
 
     public int deleteQuestionnaire(int questionnaireId) {
         try {
-            questionnaireMapper.deleteQuestionnaire(questionnaireId);
+            return questionnaireMapper.deleteQuestionnaire(questionnaireId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return -1;
+    }
+
+    public boolean validateQuestionnaire(Questionnaire questionnaire) {
+        return questionnaire.getUri() != null;
     }
 
 //    TODO:用户是否做过某一个Questionnaire在UserService中完成
