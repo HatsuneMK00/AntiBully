@@ -1,5 +1,6 @@
 package xyz.makise.antibully.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ public class User implements UserDetails {
 
 //    todo: 记笔记 确实有一些方法应该作为getter方法放在实体类中 而不是放在Service类里面！
 
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

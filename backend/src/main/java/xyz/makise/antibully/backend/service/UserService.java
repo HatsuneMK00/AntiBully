@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import xyz.makise.antibully.backend.entity.User;
 import xyz.makise.antibully.backend.mapper.UserMapper;
@@ -35,5 +36,13 @@ public class UserService implements UserDetailsService {
         }
         user.setRoles(userMapper.getRolesOfUserByUserId(user.getUserId()));
         return user;
+    }
+
+    public int registerUser(User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPwd = encoder.encode(user.getPassword());
+        user.setPassword(encodedPwd);
+        user.setMoney(0);
+        return userMapper.addNewUser(user);
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @SpringBootApplication
 @MapperScan("xyz.makise.antibully.backend.mapper")
-@EnableWebSecurity
 public class BackendApplication {
 
     public static void main(String[] args) {

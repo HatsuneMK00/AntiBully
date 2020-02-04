@@ -2,6 +2,7 @@ package xyz.makise.antibully.backend.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,10 +10,16 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
@@ -26,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Configuration
+@EnableWebSecurity
 public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
@@ -38,13 +45,7 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 //    覆写这个函数 提供一个符合要求的UserService类
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
-    }
-
-//    配置不进行Security检查的路径
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/index.html", "/static/**");
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
 //    覆写这个类 在配置时使用我们自己写的两个类
@@ -53,14 +54,11 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 //    这些逻辑由我们继承的类里的方法决定
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-            @Override
-            public <O extends FilterSecurityInterceptor> O postProcess(O object) {
-                object.setSecurityMetadataSource(filterInvocationSecurityMetadataSource);
-                object.setAccessDecisionManager(accessDecisionManager);
-                return object;
-            }
-        }).and()
+        http.authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/register").permitAll()
+                .anyRequest().hasAnyRole("USER","ADMIN")
+                .and()
                 .formLogin().loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password")
                 .permitAll()
@@ -95,6 +93,6 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
                 out.flush();
 //                out.close();
             }
-        }).and().logout().permitAll();
+        }).and().logout().permitAll().and().csrf().disable();
     }
 }
