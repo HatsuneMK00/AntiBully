@@ -60,7 +60,8 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
                 object.setAccessDecisionManager(accessDecisionManager);
                 return object;
             }
-        }).and().formLogin().loginPage("/login_p").loginProcessingUrl("/login")
+        }).and()
+                .formLogin().loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password")
                 .permitAll()
                 .failureHandler(new AuthenticationFailureHandler() {

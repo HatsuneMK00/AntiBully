@@ -27,7 +27,7 @@ public class MyFilterInvocationSecurityMetadataSource implements FilterInvocatio
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
 //  如果访问的url是login 直接放行不需要任何权限
 //        这里很可能登录页的url和处理登陆请求的url不能相同 因此这里在login后面加个p
-        if ("/login_p".equals(requestUrl)) {
+        if ("/login".equals(requestUrl)) {
             return null;
         }
 //  将请求的url和所有已有的url pattern进行匹配 得到访问这个url需要的权限（Role）
@@ -45,7 +45,8 @@ public class MyFilterInvocationSecurityMetadataSource implements FilterInvocatio
             }
         }
 //        没有匹配到的情况下全部都是需要登录权限的
-        return SecurityConfig.createList("ROLE_LOGIN");
+//        return SecurityConfig.createList("ROLE_LOGIN");
+        return null;
     }
 
     @Override
