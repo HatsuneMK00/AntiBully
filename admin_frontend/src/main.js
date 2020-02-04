@@ -13,6 +13,10 @@ Vue.use(ElementUI);
 let url = "http://localhost:8080";
 export default url;
 
+let redirectToLogin = function (vue) {
+    vue.push("/login")
+};
+
 new Vue({
     render: h => h(App),
     router

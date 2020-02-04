@@ -1,16 +1,7 @@
 <template>
     <div id="app">
         <h1>Anti Bully</h1>
-        <el-container>
-            <el-header height="">
-                <!-- Header content -->
-                <header-content/>
-            </el-header>
-            <el-main height="">
-                <!-- Main content -->
-                <main-content/>
-            </el-main>
-        </el-container>
+        <router-view/>
     </div>
 </template>
 
@@ -21,11 +12,6 @@
 
     export default {
         name: 'app',
-        components: {
-            SideBarContent,
-            MainContent,
-            HeaderContent,
-        },
         created() {
             console.log("hello from app")
         }
