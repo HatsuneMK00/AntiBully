@@ -37,10 +37,6 @@ import java.io.PrintWriter;
 public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
-    @Autowired
-    FilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource;
-    @Autowired
-    AccessDecisionManager accessDecisionManager;
 
 //    覆写这个函数 提供一个符合要求的UserService类
     @Override
