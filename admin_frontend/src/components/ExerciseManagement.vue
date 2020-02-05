@@ -173,7 +173,7 @@
         mounted() {
             let that = this;
             axios
-                .get(url + "/admin/exercises")
+                .get(url + "/admin/exercises?access_token=" + window.sessionStorage.getItem("access_token"))
                 .then(response => {
                     that.exercises = response.data;
                 })
@@ -189,7 +189,7 @@
             handleDelete(index, row) {
                 let that = this;
                 axios.delete(
-                    url + "/admin/exercise/" + row.exerciseId,
+                    url + "/admin/exercise/" + row.exerciseId + "?access_token=" + window.sessionStorage.getItem("access_token"),
                 ).then(response => {
                     if (response.data === 1) {
                         that.exercises.splice(index, 1);
@@ -207,7 +207,7 @@
             handleChangeUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/exercise",
+                    url: url + "/admin/exercise?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "put",
                     data: JSON.stringify(that.form),
                     headers:
@@ -230,7 +230,7 @@
             handleUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/exercise",
+                    url: url + "/admin/exercise?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "post",
                     data: JSON.stringify(that.form),
                     headers:
