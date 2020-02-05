@@ -27,10 +27,11 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-    //    覆写这个类 在配置时使用我们自己写的两个类
-//    在拦截了一个url后 这个url需要什么权限
-//    用户是否会被放行
-//    这些逻辑由我们继承的类里的方法决定
+/*
+* 在WebSecurityConfiguration中需要对路径的跨域请求进行配置
+* 并且由于/oauth/token会先发一个OPTIONS方法的请求，因此需要对对应的url开启该方法
+*
+* */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.requestMatchers()
