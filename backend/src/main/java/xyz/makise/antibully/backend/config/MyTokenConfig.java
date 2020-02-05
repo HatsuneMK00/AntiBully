@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 @Configuration
 public class MyTokenConfig {
+//    TODO: 将token的存储方式从内存改为redis
     @Bean
     public TokenStore tokenStore() {
         return new InMemoryTokenStore();
