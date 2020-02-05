@@ -40,6 +40,10 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
                 .and().csrf().disable();
     }
 
+
+    /*
+    * 一个蒋authenticationManager放入容器供其他类使用的函数 这边在AuthorizationServerConfig类中需要用到manager
+    * */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
