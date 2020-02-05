@@ -74,26 +74,14 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
         return next();
     } else {
-        let JSESSIONID = getCookie("JSESSIONID");
-        console.log(JSESSIONID);
-        if (JSESSIONID === "") {
+        let token = window.sessionStorage.getItem("access_token");
+        if (token == null) {
             return next('/login');
         } else {
             return next();
         }
     }
 });
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        console.log(c);
-        if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
-    }
-    return "";
-}
 
 export default router
 

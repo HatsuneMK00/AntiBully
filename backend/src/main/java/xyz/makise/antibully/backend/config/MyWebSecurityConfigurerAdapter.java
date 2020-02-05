@@ -3,6 +3,7 @@ package xyz.makise.antibully.backend.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,46 +27,17 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-//    //    覆写这个类 在配置时使用我们自己写的两个类
-////    在拦截了一个url后 这个url需要什么权限
-////    用户是否会被放行
-////    这些逻辑由我们继承的类里的方法决定
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-////                .antMatchers("/admin/**").authenticated()
-//                .anyRequest().permitAll()
-//                .and()
-//                .formLogin().loginProcessingUrl("/login")
-//                .usernameParameter("username").passwordParameter("password")
-//                .permitAll()
-//                .failureHandler((request, response, exception) -> {
-//                    response.setContentType("application/json;charset=utf-8");
-//                    PrintWriter out = response.getWriter();
-//                    StringBuffer stringBuffer = new StringBuffer();
-//                    stringBuffer.append("{\"status\":\"error\",\"msg\":\"");
-//                    if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
-//                        stringBuffer.append("用户名或密码错误");
-//                    } else {
-//                        stringBuffer.append("登陆失败");
-//                    }
-//                    stringBuffer.append("\"}");
-//                    out.write(stringBuffer.toString());
-//                    out.flush();
-////                        这是从response里拿出来的流 没必要关了吧？
-////                        out.close();
-//                }).successHandler((request, response, authentication) -> {
-//            response.setContentType("application/json;charset=utf-8");
-//            PrintWriter out = response.getWriter();
-//            StringBuffer stringBuffer = new StringBuffer();
-//            stringBuffer.append("{\"status\":\"success\",\"msg\":\"");
-//            stringBuffer.append("登陆成功");
-//            stringBuffer.append("\"}");
-//            out.write(stringBuffer.toString());
-//            out.flush();
-////           out.close();
-//        }).and().cors().and().logout().permitAll().and().csrf().disable();
-//    }
+    //    覆写这个类 在配置时使用我们自己写的两个类
+//    在拦截了一个url后 这个url需要什么权限
+//    用户是否会被放行
+//    这些逻辑由我们继承的类里的方法决定
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.requestMatchers()
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token", "/admin/**")
+                .and().cors()
+                .and().csrf().disable();
+    }
 
     @Bean
     @Override

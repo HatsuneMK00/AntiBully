@@ -21,6 +21,7 @@
 <script>
     import axios from 'axios'
     import url from '@/main'
+    import {client_id, client_secret, scope} from '@/settings'
 
     export default {
         name: "Login",
@@ -35,15 +36,20 @@
         methods: {
             loginAdmin() {
                 let that = this;
-                let params = new FormData();
+                let params = new URLSearchParams();
                 params.append("username", this.form.username);
                 params.append("password", this.form.password);
+                params.append("grant_type", "password");
+                params.append("scope", scope);
+                params.append("client_id", client_id);
+                params.append("client_secret", client_secret);
                 axios({
-                    url: url + '/login',
+                    url: url + '/oauth/token',
                     data: params,
                     method: "post",
                 }).then(response => {
-                    console.log(response.data);
+                    window.sessionStorage.setItem("access_token", response.data.access_token);
+                    that.$router.push("/course")
                 }).catch(reason => {
                     console.log(reason);
                 })

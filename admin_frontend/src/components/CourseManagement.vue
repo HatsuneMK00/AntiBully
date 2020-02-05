@@ -124,7 +124,7 @@
             handleDelete(index, row) {
                 let that = this;
                 axios.delete(
-                    url + "/admin/course/" + row.chapter + '/' + row.courseId,
+                    url + "/admin/course/" + row.chapter + '/' + row.courseId + "?access_token=" + window.sessionStorage.getItem("access_token"),
                 ).then(response => {
                     that.courses.splice(index, 1);
                 }).catch(reason => {
@@ -140,7 +140,7 @@
             handleUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/course",
+                    url: url + "/admin/course?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "post",
                     data: JSON.stringify(that.form),
                     headers:
@@ -160,7 +160,7 @@
             handleChangeUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/course",
+                    url: url + "/admin/course?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "put",
                     data: JSON.stringify(that.form),
                     headers:
@@ -182,7 +182,7 @@
             //TODO: 记笔记 这里this指向在then里面就变了 需要在外面存一下this
             let that = this;
             axios
-                .get(url + "/admin/courses")
+                .get(url + "/admin/courses?access_token=" + window.sessionStorage.getItem("access_token"))
                 .then(function (response) {
                     that.courses = response.data;
                 })
