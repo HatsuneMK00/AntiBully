@@ -6,10 +6,6 @@
 </template>
 
 <script>
-    import SideBarContent from "@/components/SideBarContent";
-    import MainContent from "@/components/MainContent";
-    import HeaderContent from "@/components/HeaderContent";
-
     export default {
         name: 'app',
         created() {

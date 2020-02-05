@@ -110,7 +110,7 @@
             handleDelete(index, row) {
                 let that = this;
                 axios.delete(
-                    url + "/admin/repo/" + row.repoId,
+                    url + "/admin/repo/" + row.repoId + '?access_token=' + window.sessionStorage.getItem("access_token"),
                 ).then(response => {
                     if (response.data === 1) {
                         that.repos.splice(index, 1);
@@ -135,7 +135,7 @@
             handleUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/repo",
+                    url: url + "/admin/repo?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "post",
                     data: JSON.stringify(that.form),
                     headers:
@@ -158,7 +158,7 @@
             handleChangeUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/repo",
+                    url: url + "/admin/repo?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "put",
                     data: JSON.stringify(that.form),
                     headers:
@@ -180,7 +180,7 @@
                 that.exercises = [];
                 that.selected = [];
                 axios.get(
-                    url + '/admin/exercises'
+                    url + '/admin/exercises?access_token=' + window.sessionStorage.getItem("access_token")
                 ).then(response => {
                     response.data.forEach((exercise, index) => {
                         that.exercises.push({
@@ -192,7 +192,7 @@
                     console.log(reason);
                 });
                 axios.get(
-                    url + '/admin/repo/' + row.repoId
+                    url + '/admin/repo/' + row.repoId + '?access_token=' + window.sessionStorage.getItem("access_token")
                 ).then(response => {
                     that.selected = response.data;
                 }).catch(reason => {
@@ -205,7 +205,7 @@
             handleManageExercisesUpload() {
                 let that = this;
                 axios({
-                    url: url + '/admin/repo/bindRepoAndExercise',
+                    url: url + '/admin/repo/bindRepoAndExercise?access_token=' + window.sessionStorage.getItem("access_token"),
                     method: "post",
                     data: JSON.stringify({
                         selected: that.selected,
@@ -229,7 +229,7 @@
         mounted() {
             let that = this;
             axios
-                .get(url + "/admin/repos")
+                .get(url + "/admin/repos?access_token=" + window.sessionStorage.getItem("access_token"))
                 .then(function (response) {
                     that.repos = response.data;
                 })

@@ -85,7 +85,7 @@
         mounted() {
             let that = this;
             axios
-                .get(url + "/admin/questionnaires")
+                .get(url + "/admin/questionnaires?access_token=" + window.sessionStorage.getItem("access_token"))
                 .then(function (response) {
                     that.questionnaires = response.data;
                 })
@@ -101,7 +101,7 @@
             handleDelete(index, row) {
                 let that = this;
                 axios.delete(
-                    url + "/admin/questionnaire/" + row.questionnaireId,
+                    url + "/admin/questionnaire/" + row.questionnaireId + '?access_token=' +  + window.sessionStorage.getItem("access_token"),
                 ).then(response => {
                     if (response.data === 1) {
                         that.questionnaires.splice(index, 1);
@@ -114,7 +114,7 @@
             handleUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/questionnaire",
+                    url: url + "/admin/questionnaire?access_token=" +  + window.sessionStorage.getItem("access_token"),
                     method: "post",
                     data: JSON.stringify(that.form),
                     headers:
@@ -142,7 +142,7 @@
             handleChangeUpload() {
                 let that = this;
                 axios({
-                    url: url + "/admin/questionnaire",
+                    url: url + "/admin/questionnaire?access_token=" + window.sessionStorage.getItem("access_token"),
                     method: "put",
                     data: JSON.stringify(that.form),
                     headers:

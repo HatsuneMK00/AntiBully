@@ -68,7 +68,7 @@
         methods: {
             handleDone(index, row) {
                 axios.put(
-                    url + '/admin/helpInfoHandled/' + row.infoId
+                    url + '/admin/helpInfoHandled/' + row.infoId + '?access_token=' + window.sessionStorage.getItem("access_token")
                 ).then(response => {
                     if (response.data === 1) {
                         row.status = 'handled';
@@ -82,7 +82,7 @@
         mounted() {
             let that = this;
             axios
-                .get(url + "/admin/helpInfos")
+                .get(url + "/admin/helpInfos?access_token=" + window.sessionStorage.getItem("access_token"))
                 .then(function (response) {
                     that.helpInfos = response.data;
                 })

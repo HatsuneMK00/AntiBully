@@ -14,13 +14,11 @@
 </template>
 
 <script>
-    import SideBarContent from "@/components/SideBarContent";
     import HeaderContent from "@/components/HeaderContent";
 
     export default {
         name: "MainContent",
         components: {
-            SideBarContent,
             HeaderContent,
         },
         created() {
