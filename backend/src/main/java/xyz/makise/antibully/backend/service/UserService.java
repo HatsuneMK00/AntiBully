@@ -18,15 +18,6 @@ public class UserService implements UserDetailsService {
         this.userMapper = userMapper;
     }
 
-    public User getUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.getUserByName(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("用户名错误");
-        }
-        user.setRoles(userMapper.getRolesOfUserByUserId(user.getUserId()));
-        return user;
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        这边要封装roles 因为getAttributes需要用到里面的Roles 不封装的话就没有了
