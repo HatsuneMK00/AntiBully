@@ -50,6 +50,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//        感觉上配置多个client是在需要使用多种oauth2.0模式的时候用的
+//        这里只配置一个client 通过用户的role来进行权限划分
+//        因此authorities和scopes的值有些奇怪 但是前段已经写好了这里就不改了
         clients.inMemory()
                 .withClient("client_1")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
