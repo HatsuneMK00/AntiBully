@@ -16,9 +16,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+//        TODO: client对应的authority还是没搞懂是什么 这边只配置一个client然后根据用户的role进行权限管理
         http.authorizeRequests()
-                .antMatchers("/admin/**").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/register").permitAll()
+                .anyRequest().hasRole("USER")
                 .and()
                 .cors();
     }

@@ -1,6 +1,8 @@
 package xyz.makise.antibully.backend.entity;
 
-public class Role {
+import java.io.Serializable;
+
+public class Role implements Serializable {
     int roleId;
     String name;
 
