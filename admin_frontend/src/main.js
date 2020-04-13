@@ -10,7 +10,7 @@ Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 
-let url = "http://localhost:8080";
+let url = "http://119.23.188.171:8080";
 export default url;
 
 let redirectToLogin = function (vue) {

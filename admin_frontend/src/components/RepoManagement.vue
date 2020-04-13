@@ -57,7 +57,7 @@
         <el-dialog title="管理题目" :visible.sync="manageDialogVisible">
             <el-transfer
                     style="text-align: left; display: inline-block"
-                    :titles="['可选择题目', '已在题库中']"
+                    :titles="['已在题库中', '可选择题目']"
                     filterable
                     filter-placeholder="请输入题干搜索"
                     v-model="selected"
